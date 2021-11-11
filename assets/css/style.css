@@ -1,0 +1,19 @@
+#high-score {
+    display: inline-block;
+    text-align: left;
+}
+
+#timer {
+    float: right;
+}
+
+#title {
+    padding-top: 5%;
+    text-align: center;
+}
+
+.button {
+    background-color: purple;
+    color: white;
+    border-radius: 4px;
+}
