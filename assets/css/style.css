@@ -31,3 +31,12 @@ li {
 .btn:hover{
     opacity: .5;
 }
+
+#validation {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    border-top: 1px solid gainsboro;
+    color: gainsboro;
+    font-size: 24px;
+}

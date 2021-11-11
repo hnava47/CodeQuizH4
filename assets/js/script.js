@@ -2,6 +2,12 @@ var rootEl = $('#root');
 var titleEl = $('#title');
 var descEl = $('#desc');
 var btnEl = $('#start-button');
+var timEl = $('#timer');
+var valEl = $('#validation');
+var quesNum = 1;
+var secondsLeft = 75;
+
+valEl.hide();
 
 const questions = {
     1: 'Commonly used data types DO NOT include:',
@@ -17,11 +23,21 @@ const options = {
     4: ['commas', 'curly brackets', 'quotes', 'parentheses']
 };
 
-const answers = [3, 3, 4];
+const answers = {1: 3, 2: 3, 3: 4};
+
+function setTime() {
+    timEl.text('Time: ' + secondsLeft);
+    var timeInterval = setInterval(function() {
+        secondsLeft--;
+        timEl.text('Time: ' + secondsLeft);
+
+        if (secondsLeft === 0) {
+            clearInterval(timeInterval);
+        }
+    }, 1000);
+}
 
 btnEl.on('click', function() {
-    quesNum = 1;
-
     rootEl.css({
         'text-align': 'left'
     });
@@ -42,10 +58,17 @@ btnEl.on('click', function() {
         currentOpt.append(buttonOpt);
         rootEl.append(currentOpt);
     }
-    quesNum++;
+    setTime();
 });
 
 $(document).on('click', '.btn-child', function(){
+    if (this.id === answers[quesNum]) {
+        valEl.text('Correct!');
+    } else {
+        valEl.text('Wrong!');
+    }
+
+    quesNum++;
     liValues = rootEl.children();
 
     titleEl.text(questions[quesNum]);
@@ -54,5 +77,8 @@ $(document).on('click', '.btn-child', function(){
 
         liEl.text([i+'.', options[quesNum][i-1]].join(' '));
     }
-    quesNum++;
+    valEl.show();
+    setTimeout(function() {
+        valEl.fadeOut();
+    }, 1000);
 });
