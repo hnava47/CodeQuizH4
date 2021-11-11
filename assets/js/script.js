@@ -2,25 +2,21 @@ var rootEl = $('#root');
 var titleEl = $('#title');
 var descEl = $('#desc');
 var btnEl = $('#start-button');
-var btnChildEl = $('.btn-child');
 
 const questions = {
     1: 'Commonly used data types DO NOT include:',
     2: 'The condition in an if/else statement is enclosed within ____',
-    3: '',
-    4: '',
-    5: ''
 }
 
 const options = {
     1: ['strings', 'booleans', 'alerts', 'numbers'],
-    2: ['quotes', 'curly brackets', 'paranthesis', 'square brackets']
+    2: ['quotes', 'curly brackets', 'parentheses', 'square brackets']
 }
 
 const answers = [3]
 
 btnEl.on('click', function() {
-    var quesNum = 1;
+    quesNum = 1;
 
     rootEl.css({
         'text-align': 'left'
@@ -41,14 +37,16 @@ btnEl.on('click', function() {
 
         currentOpt.append(buttonOpt);
         rootEl.append(currentOpt);
-
     }
-
-    console.log(this.id);
-
     quesNum++;
 });
 
-btnChildEl.on('click', function() {
-    
+$(document).on('click', '.btn-child', function(){
+    liValues = rootEl.children();
+
+    for (var i = 1; i < liValues.length; i++) {
+        var liEl = $('#'+i)
+
+        liEl.text([i+'.', options[quesNum][i-1]].join(' '));
+    }
 });
