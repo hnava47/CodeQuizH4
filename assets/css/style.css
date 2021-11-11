@@ -7,13 +7,27 @@
     float: right;
 }
 
-#title {
-    padding-top: 5%;
+#root {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
     text-align: center;
 }
 
-.button {
+li {
+    list-style: none;
+}
+
+.btn, .btn-child {
     background-color: purple;
     color: white;
+    border: none;
     border-radius: 4px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.btn:hover{
+    opacity: .5;
 }
