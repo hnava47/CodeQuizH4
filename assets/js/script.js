@@ -5,7 +5,6 @@ var btnEl = $('#start-button');
 var timEl = $('#timer');
 var valEl = $('#validation');
 var quesNum = 1;
-var secondsLeft = 75;
 
 valEl.hide();
 
@@ -25,11 +24,12 @@ const options = {
 
 const answers = {1: 3, 2: 3, 3: 4};
 
-function setTime() {
+function setTime(secondsLeft) {
     timEl.text('Time: ' + secondsLeft);
-    var timeInterval = setInterval(function() {
+    timeInterval = setInterval(function() {
         secondsLeft--;
         timEl.text('Time: ' + secondsLeft);
+        secs = secondsLeft;
 
         if (secondsLeft === 0) {
             clearInterval(timeInterval);
@@ -58,15 +58,22 @@ btnEl.on('click', function() {
         currentOpt.append(buttonOpt);
         rootEl.append(currentOpt);
     }
-    setTime();
+    setTime(75);
 });
 
 $(document).on('click', '.btn-child', function(){
-    if (this.id === answers[quesNum]) {
+    if (parseInt(this.id) === answers[quesNum]) {
         valEl.text('Correct!');
     } else {
         valEl.text('Wrong!');
+        clearInterval(timeInterval);
+        setTime(secs-10);
     }
+
+    valEl.show();
+    setTimeout(function() {
+        valEl.fadeOut();
+    }, 1000);
 
     quesNum++;
     liValues = rootEl.children();
@@ -77,8 +84,4 @@ $(document).on('click', '.btn-child', function(){
 
         liEl.text([i+'.', options[quesNum][i-1]].join(' '));
     }
-    valEl.show();
-    setTimeout(function() {
-        valEl.fadeOut();
-    }, 1000);
 });
