@@ -1,3 +1,4 @@
+var navEl = $('#nav-bar');
 var rootEl = $('#root');
 var titleEl = $('#title');
 var descEl = $('#desc');
@@ -5,6 +6,7 @@ var btnEl = $('#start-button');
 var timEl = $('#timer');
 var valEl = $('#validation');
 var quesNum = 1;
+var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
 valEl.hide();
 
@@ -12,17 +14,25 @@ const questions = {
     1: 'Commonly used data types DO NOT include:',
     2: 'The condition in an if/else statement is enclosed within ____.',
     3: 'Arrays in JavaScript can be used to store ____.',
-    4: 'String value must be enclosed with ____ when being assigned to variables.'
+    4: 'String value must be enclosed with ____ when being assigned to variables.',
+    5: 'A very useful tool during development and debugging for printing content to the debugger is:'
 };
 
 const options = {
     1: ['strings', 'booleans', 'alerts', 'numbers'],
     2: ['quotes', 'curly brackets', 'parentheses', 'square brackets'],
     3: ['numbers and strings', 'other arrays', 'booleans', 'all of the above'],
-    4: ['commas', 'curly brackets', 'quotes', 'parentheses']
+    4: ['commas', 'curly brackets', 'quotes', 'parentheses'],
+    5: ['javascript', 'terminal/bash', 'for loops', 'console.log']
 };
 
-const answers = {1: 3, 2: 3, 3: 4};
+const answers = {
+    1: 3,
+    2: 3,
+    3: 4,
+    4: 3,
+    5: 4
+};
 
 function setTime(secondsLeft) {
     timEl.text('Time: ' + secondsLeft);
@@ -58,30 +68,105 @@ btnEl.on('click', function() {
         currentOpt.append(buttonOpt);
         rootEl.append(currentOpt);
     }
-    setTime(75);
+    secs = 75;
+    setTime(secs);
 });
 
 $(document).on('click', '.btn-child', function(){
-    if (parseInt(this.id) === answers[quesNum]) {
-        valEl.text('Correct!');
+    if (quesNum < Object.keys(questions).length) {
+        if (parseInt(this.id) === answers[quesNum]) {
+            valEl.text('Correct!');
+        } else {
+            valEl.text('Wrong!');
+            clearInterval(timeInterval);
+            setTime(secs-10);
+        }
+
+        valEl.show();
+        setTimeout(function() {
+            valEl.fadeOut();
+        }, 1000);
+
+        quesNum++;
+        liValues = rootEl.children();
+
+        titleEl.text(questions[quesNum]);
+        for (var i = 1; i < liValues.length; i++) {
+            var liEl = $('#'+i);
+
+            liEl.text([i+'.', options[quesNum][i-1]].join(' '));
+        }
     } else {
-        valEl.text('Wrong!');
+        if (parseInt(this.id) === answers[quesNum]) {
+            valEl.text('Correct!');
+        } else {
+            valEl.text('Wrong!');
+            secs -= 10;
+            timEl.text('Time: ' + secs);
+        }
         clearInterval(timeInterval);
-        setTime(secs-10);
+
+        valEl.show();
+        setTimeout(function() {
+            valEl.fadeOut();
+        }, 1000);
+
+        titleEl.text('All Done!')
+        $('li').remove();
+
+        var score = $('<p>');
+        var division = $('<div>');
+        var initials = $('<p>');
+        var input = $('<input>');
+        var subBtn = $('<button>');
+
+        score.text('Your final score is ' + secs)
+            .attr('id', 'score');
+
+        initials.text('Enter your initials:')
+            .css('display', 'inline-block');
+
+        input.attr('id', 'ent-initials')
+            .css('margin', '0 5px');
+
+        subBtn.text('Submit')
+            .addClass('btn')
+            .attr('id', 'sub-button');
+
+        division.append(initials)
+            .append(input)
+            .append(subBtn)
+            .attr('id', 'initial-submit');
+
+        rootEl.append(score)
+            .append(division);
+    }
+});
+
+$(document).on('click', '#sub-button',function() {
+    var userScore = {
+        initials: $('#ent-initials').val(),
+        score: secs
+    };
+
+    highScores.push(userScore);
+    highScores.sort((a, b) => b.score - a.score);
+
+    localStorage.setItem('highScores', JSON.stringify(highScores));
+
+    navEl.remove();
+    $('#score').remove();
+    $('#initial-submit').remove();
+    titleEl.text('High Scores');
+
+    for (var i = 0; i < highScores.length; i++) {
+        scoreList = $('<h4>');
+        scoreList.text(i + '. ' + highScores[i]['initials'] + ' - ' + highScores[i]['score'])
+            .css({
+                'background-color': 'purple',
+                'color': 'white'
+            });
+        rootEl.append(scoreList);
     }
 
-    valEl.show();
-    setTimeout(function() {
-        valEl.fadeOut();
-    }, 1000);
-
-    quesNum++;
-    liValues = rootEl.children();
-
-    titleEl.text(questions[quesNum]);
-    for (var i = 1; i < liValues.length; i++) {
-        var liEl = $('#'+i);
-
-        liEl.text([i+'.', options[quesNum][i-1]].join(' '));
-    }
 });
