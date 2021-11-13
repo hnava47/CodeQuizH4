@@ -72,8 +72,8 @@ function viewHighScores() {
         .attr('id', 'title');
 
     divEl.css({
-        'background-color': 'purple',
-        'color': 'white'
+        'background-color': '#D7A1F9',
+        'color': 'black'
     });
 
     for (var i = 0; i < highScores.length; i++) {
@@ -84,9 +84,9 @@ function viewHighScores() {
     }
 
     goBack.text('Go Back')
-    .addClass('btn')
-    .attr('id', 'go-back')
-    .css('margin-right', '5px');
+        .addClass('btn')
+        .attr('id', 'go-back')
+        .css('margin-right', '5px');
 
     hsClear.text('Clear High Scores')
         .addClass('btn')
@@ -215,16 +215,20 @@ $(document).on('click', '.btn-child', function(){
     }
 });
 
-$(document).on('click', '#sub-button',function() {
-    var userScore = {
-        initials: $('#ent-initials').val(),
-        score: secs
-    };
+$(document).on('click', '#sub-button', function() {
+    if ($('#ent-initials').val() === '') {
+        alert('Must enter initials!')
+    } else {
+        var userScore = {
+            initials: $('#ent-initials').val(),
+            score: secs
+        };
 
-    highScores.push(userScore);
-    highScores.sort((a, b) => b.score - a.score);
+        highScores.push(userScore);
+        highScores.sort((a, b) => b.score - a.score);
 
-    localStorage.setItem('highScores', JSON.stringify(highScores));
+        localStorage.setItem('highScores', JSON.stringify(highScores));
 
-    viewHighScores();
+        viewHighScores();
+    }
 });
