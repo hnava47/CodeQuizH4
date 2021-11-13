@@ -1,14 +1,23 @@
 var navEl = $('#nav-bar');
 var rootEl = $('#root');
-var titleEl = $('#title');
-var descEl = $('#desc');
-var btnEl = $('#start-button');
 var timEl = $('#timer');
 var valEl = $('#validation');
+var headEl = $('<h1>');
+var parEl = $('<p>');
+var divEl = $('<div>');
+var initials = $('<p>');
+var input = $('<input>');
+var subBtn = $('<button>');
+var hsClear = $('<button>');
+var goBack = $('<button>');
 var quesNum = 1;
 var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
-valEl.hide();
+homePage();
+
+var titleEl = $('#title');
+var descEl = $('#desc');
+var btnEl = $('#start-button');
 
 const questions = {
     1: 'Commonly used data types DO NOT include:',
@@ -34,6 +43,59 @@ const answers = {
     5: 4
 };
 
+function homePage() {
+    navEl.show();
+    timEl.text('Time: 0');
+    rootEl.children().remove();
+
+    headEl.text('Coding Quiz Challenge')
+        .attr('id', 'title');
+
+    parEl.text('Try to answer the following coding questions within the time limit. Keep in mind that incorrect answers will penalize your score time by ten seconds!')
+        .attr('id', 'desc');
+
+    subBtn.text('Start Quiz')
+        .addClass('btn')
+        .attr('id', 'start-button');
+
+    rootEl.append(headEl, parEl, subBtn)
+        .css('text-align', 'center');
+}
+
+function viewHighScores() {
+    navEl.hide();
+
+    rootEl.children().remove();
+    divEl.children().remove();
+
+    headEl.text('High Scores')
+        .attr('id', 'title');
+
+    divEl.css({
+        'background-color': 'purple',
+        'color': 'white'
+    });
+
+    for (var i = 0; i < highScores.length; i++) {
+        scoreList = $('<h4>');
+        scoreList.text((i + 1) + '. ' + highScores[i]['initials'] + ' - ' + highScores[i]['score'])
+            .css('padding-left', '10px');
+        divEl.append(scoreList);
+    }
+
+    goBack.text('Go Back')
+    .addClass('btn')
+    .attr('id', 'go-back')
+    .css('margin-right', '5px');
+
+    hsClear.text('Clear High Scores')
+        .addClass('btn')
+        .attr('id', 'clear');
+
+    rootEl.append(headEl, divEl, goBack, hsClear)
+        .css('text-align', 'left');
+}
+
 function setTime(secondsLeft) {
     timEl.text('Time: ' + secondsLeft);
     timeInterval = setInterval(function() {
@@ -47,10 +109,23 @@ function setTime(secondsLeft) {
     }, 1000);
 }
 
-btnEl.on('click', function() {
-    rootEl.css({
-        'text-align': 'left'
-    });
+$(document).on('click', '#clear', function() {
+    localStorage.clear();
+    highScores = [];
+    divEl.children().remove();
+});
+
+$(document).on('click', '#go-back', function() {
+    homePage();
+});
+
+$(document).on('click', '#high-score', function() {
+    viewHighScores();
+});
+
+$(document).on('click', '#start-button',function() {
+    quesNum = 1;
+    rootEl.css('text-align', 'left');
 
     btnEl.remove();
     descEl.remove();
@@ -73,6 +148,7 @@ btnEl.on('click', function() {
 });
 
 $(document).on('click', '.btn-child', function(){
+    valEl.hide();
     if (quesNum < Object.keys(questions).length) {
         if (parseInt(this.id) === answers[quesNum]) {
             valEl.text('Correct!');
@@ -85,7 +161,7 @@ $(document).on('click', '.btn-child', function(){
         valEl.show();
         setTimeout(function() {
             valEl.fadeOut();
-        }, 1000);
+        }, 700);
 
         quesNum++;
         liValues = rootEl.children();
@@ -109,18 +185,13 @@ $(document).on('click', '.btn-child', function(){
         valEl.show();
         setTimeout(function() {
             valEl.fadeOut();
-        }, 1000);
+        }, 700);
 
-        titleEl.text('All Done!')
+        titleEl.text('All Done!');
+        divEl.children().remove();
         $('li').remove();
 
-        var score = $('<p>');
-        var division = $('<div>');
-        var initials = $('<p>');
-        var input = $('<input>');
-        var subBtn = $('<button>');
-
-        score.text('Your final score is ' + secs)
+        parEl.text('Your final score is ' + secs)
             .attr('id', 'score');
 
         initials.text('Enter your initials:')
@@ -133,13 +204,14 @@ $(document).on('click', '.btn-child', function(){
             .addClass('btn')
             .attr('id', 'sub-button');
 
-        division.append(initials)
-            .append(input)
-            .append(subBtn)
+        divEl.append(initials, input, subBtn)
+            .css({
+                'background-color': 'white',
+                'color': 'black'
+            })
             .attr('id', 'initial-submit');
 
-        rootEl.append(score)
-            .append(division);
+        rootEl.append(parEl, divEl);
     }
 });
 
@@ -154,19 +226,5 @@ $(document).on('click', '#sub-button',function() {
 
     localStorage.setItem('highScores', JSON.stringify(highScores));
 
-    navEl.remove();
-    $('#score').remove();
-    $('#initial-submit').remove();
-    titleEl.text('High Scores');
-
-    for (var i = 0; i < highScores.length; i++) {
-        scoreList = $('<h4>');
-        scoreList.text(i + '. ' + highScores[i]['initials'] + ' - ' + highScores[i]['score'])
-            .css({
-                'background-color': 'purple',
-                'color': 'white'
-            });
-        rootEl.append(scoreList);
-    }
-
+    viewHighScores();
 });

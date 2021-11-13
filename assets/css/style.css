@@ -1,6 +1,8 @@
 #high-score {
     display: inline-block;
     text-align: left;
+    color: purple;
+    cursor: pointer;
 }
 
 #timer {
