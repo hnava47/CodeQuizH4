@@ -233,4 +233,4 @@ $(document).ready(function() {
             viewHighScores();
         }
     });
-})
+});
