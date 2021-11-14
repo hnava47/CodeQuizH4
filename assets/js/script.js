@@ -12,6 +12,7 @@ $(document).ready(function() {
     var $hsClear = $('<button>');
     var $goBack = $('<button>');
     var quesNum = 1;
+    var valTime = 700;
     var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
     homePage();
@@ -162,7 +163,7 @@ $(document).ready(function() {
             $valEl.show();
             setTimeout(function() {
                 $valEl.fadeOut();
-            }, 700);
+            }, valTime);
 
             quesNum++;
             $liValues = $rootEl.children();
@@ -186,7 +187,7 @@ $(document).ready(function() {
             $valEl.show();
             setTimeout(function() {
                 $valEl.fadeOut();
-            }, 700);
+            }, valTime);
 
             const $formEl = $('<form>');
 
