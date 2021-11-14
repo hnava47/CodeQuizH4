@@ -1,25 +1,25 @@
 $(document).ready(function() {
-    var $navEl = $('#nav-bar');
-    var $rootEl = $('#root');
-    var $timEl = $('#timer');
-    var $valEl = $('#validation');
-    var $headEl = $('<h1>');
-    var $parEl = $('<p>');
-    var $divEl = $('<div>');
-    var $initials = $('<p>');
-    var $input = $('<input>');
-    var $subBtn = $('<button>');
-    var $hsClear = $('<button>');
-    var $goBack = $('<button>');
+    const $navEl = $('#nav-bar');
+    const $rootEl = $('#root');
+    const $timEl = $('#timer');
+    const $valEl = $('#validation');
+    const $headEl = $('<h1>');
+    const $parEl = $('<p>');
+    const $divEl = $('<div>');
+    const $initials = $('<p>');
+    const $input = $('<input>');
+    const $subBtn = $('<button>');
+    const $hsClear = $('<button>');
+    const $goBack = $('<button>');
     var quesNum = 1;
-    var valTime = 700;
+    const valTime = 700;
     var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
     homePage();
 
-    var $titleEl = $('#title');
-    var $descEl = $('#desc');
-    var $btnEl = $('#start-button');
+    const $titleEl = $('#title');
+    const $descEl = $('#desc');
+    const $btnEl = $('#start-button');
 
     const questions = {
         1: 'Commonly used data types DO NOT include:',
@@ -226,7 +226,7 @@ $(document).ready(function() {
             $input.css('border-color', 'red');
             alert('Must enter initials!')
         } else {
-            var userScore = {
+            let userScore = {
                 initials: $('#ent-initials').val(),
                 score: secs
             };
