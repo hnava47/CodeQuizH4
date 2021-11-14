@@ -11,9 +11,9 @@ $(document).ready(function() {
     const $subBtn = $('<button>');
     const $hsClear = $('<button>');
     const $goBack = $('<button>');
-    var quesNum = 1;
+    let quesNum = 1;
     const valTime = 700;
-    var highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
     homePage();
 
@@ -202,7 +202,10 @@ $(document).ready(function() {
                 .css('display', 'inline-block');
 
             $input.attr('id', 'ent-initials')
-                .css('margin', '0 5px');
+                .css({
+                    'margin': '0 5px',
+                    'border-color': 'inherit'
+                });
 
             $subBtn.text('Submit')
                 .addClass('btn')
