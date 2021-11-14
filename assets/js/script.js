@@ -225,7 +225,7 @@ $(document).ready(function() {
     $(document).on('submit', '#initial-submit',function(event) {
         event.preventDefault();
 
-        if ($('#ent-initials').val() === '') {
+        if ($('#ent-initials').val().trim() === '') {
             $input.css('border-color', 'red');
             alert('Must enter initials!')
         } else {
