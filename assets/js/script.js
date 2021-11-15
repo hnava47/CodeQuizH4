@@ -107,9 +107,51 @@ $(document).ready(function() {
 
             if (secondsLeft === 0) {
                 clearInterval(timeInterval);
+                $valEl.text('Times Up!');
+                quizComplete();
             }
         }, 1000);
     }
+
+    function quizComplete() {
+        clearInterval(timeInterval);
+
+        $valEl.show();
+        setTimeout(function() {
+            $valEl.fadeOut();
+        }, valTime);
+
+        const $formEl = $('<form>');
+
+        $titleEl.text('All Done!');
+        $divEl.remove();
+        $('li').remove();
+
+        $parEl.text('Your final score is ' + secs)
+            .attr('id', 'score');
+
+        $initials.text('Enter your initials:')
+            .css('display', 'inline-block');
+
+        $input.attr('id', 'ent-initials')
+            .css({
+                'margin': '0 5px',
+                'border-color': 'inherit'
+            });
+
+        $subBtn.text('Submit')
+            .addClass('btn')
+            .attr('id', 'sub-button');
+
+        $formEl.append($initials, $input, $subBtn)
+            .css({
+                'background-color': 'white',
+                'color': 'black'
+            })
+            .attr('id', 'initial-submit');
+
+        $rootEl.append($parEl, $formEl);
+    };
 
     $(document).on('click', '#clear', function() {
         localStorage.clear();
@@ -182,43 +224,8 @@ $(document).ready(function() {
                 secs -= 10;
                 $timEl.text('Time: ' + secs);
             }
-            clearInterval(timeInterval);
 
-            $valEl.show();
-            setTimeout(function() {
-                $valEl.fadeOut();
-            }, valTime);
-
-            const $formEl = $('<form>');
-
-            $titleEl.text('All Done!');
-            $divEl.remove();
-            $('li').remove();
-
-            $parEl.text('Your final score is ' + secs)
-                .attr('id', 'score');
-
-            $initials.text('Enter your initials:')
-                .css('display', 'inline-block');
-
-            $input.attr('id', 'ent-initials')
-                .css({
-                    'margin': '0 5px',
-                    'border-color': 'inherit'
-                });
-
-            $subBtn.text('Submit')
-                .addClass('btn')
-                .attr('id', 'sub-button');
-
-            $formEl.append($initials, $input, $subBtn)
-                .css({
-                    'background-color': 'white',
-                    'color': 'black'
-                })
-                .attr('id', 'initial-submit');
-
-            $rootEl.append($parEl, $formEl);
+            quizComplete();
         }
     });
 
