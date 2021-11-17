@@ -154,7 +154,7 @@ $(document).ready(function() {
     };
 
     $(document).on('click', '#clear', function() {
-        localStorage.clear();
+        localStorage.removeItem('highScores');
         highScores = [];
         $divEl.children().remove();
     });
@@ -241,7 +241,7 @@ $(document).ready(function() {
                 score: secs
             };
 
-            highScores.push(userScore);
+            highScores.push(userScore);``
             highScores.sort((a, b) => b.score - a.score);
 
             localStorage.setItem('highScores', JSON.stringify(highScores));
