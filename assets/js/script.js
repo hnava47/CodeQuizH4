@@ -241,7 +241,7 @@ $(document).ready(function() {
                 score: secs
             };
 
-            highScores.push(userScore);``
+            highScores.push(userScore);
             highScores.sort((a, b) => b.score - a.score);
 
             localStorage.setItem('highScores', JSON.stringify(highScores));
